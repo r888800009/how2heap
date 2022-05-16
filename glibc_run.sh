@@ -41,13 +41,15 @@ done
 OUTPUT_DIR="$VERSION/$GLIBC_VERSION/${DIR_HOST}_${DIR_TCACHE}/lib"
 
 # Get glibc source
-if [ ! -e "$OUTPUT_DIR/libc-$GLIBC_VERSION.so" ]; then
+if [ ! -e "$OUTPUT_DIR/libc.so.6" ]; then
     echo "Error: Glibc-version wasn't build. Build it first:"
     echo "./build_glibc $GLIBC_VERSION <#make-threads"
+    exit
 fi
 
+ld_list=($OUTPUT_DIR/ld-*.so*)
+target_interp="${ld_list[0]}"
 curr_interp=$(readelf -l "$TARGET" | grep 'Requesting' | cut -d':' -f2 | tr -d ' ]')
-target_interp="$OUTPUT_DIR/ld-$GLIBC_VERSION.so"
 
 if [[ $curr_interp != $target_interp ]];
 then

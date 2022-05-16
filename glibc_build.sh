@@ -6,6 +6,8 @@ VERSION="./glibc_versions"
 
 CC='gcc'
 CXX='g++'
+CFLAGS='-Wno-error -O2'
+CXXFLAGS='-Wno-error -O2'
 
 # Handle arguments
 function show_help {
@@ -19,7 +21,7 @@ fi
 
 DIR_TCACHE='tcache'
 DIR_HOST='x64'
-BUILD_OPTS=''
+BUILD_OPTS="--without-selinux CFLAGS='$CFLAGS' CXXFLAGS='$CXXFLAGS'"
 GLIBC_VERSION=''
 
 while :; do
@@ -52,7 +54,7 @@ while :; do
             DIR_HOST='i686'
             BUILD_OPTS="$BUILD_OPTS CC='$CC -m32' CXX='$CXX -m32'"
             BUILD_OPTS="$BUILD_OPTS --host=i686-linux-gnu --build=i686-pc-linux-gnu"
-            BUILD_OPTS="$BUILD_OPTS CFLAGS='-O2 -m32' CXXFLAGS='-O2 -m32' LDFLAGS='-m32'"
+            BUILD_OPTS="$BUILD_OPTS CFLAGS='-O2 -m32 $CFLAGS' CXXFLAGS='-O2 -m32 $CXXFLAGS' LDFLAGS='-m32'"
             ;;
         '')
             break
